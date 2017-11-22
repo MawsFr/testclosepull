@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Titre de la page</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+</head>
+<body>
+      Nombre d'articles : <input id="nb" type="text" name="fname"><br>
+      Prix d'un article : <input id="prix" type="text" name="lname"><br>
+      Code pays : 
+      <select id="pays">
+          <option value="20">FR</option>
+          <option value="20">EE</option>
+          <option value="19">DE</option>
+          <option value="23">IE</option>
+          <option value="25">SE</option>
+          <option value="17">LU</option>
+          <option value="23">FI</option>
+          <option value="21">BE</option>
+          <option value="20">AU</option>
+        </select>
+        <br>
+      <input id="valider" class="btn" type="button" value="Calculer le prix">
+      Total (TTC) : <span id="resultat"></span>
+      <br><span id="erreur" style="color:red;"></span>
+  <script src="jquery.js"></script>
+<script>
+  var getRabais = function(res) {
+    if(res >= 1000 && res < 5000) {
+      return 2.5;
+    } else if(res >= 5000 && res < 7000) {
+      return 4.75;
+    } else if(res >= 7000 && res < 10000) {
+      return 6.25;
+    } else if(res >= 10000 && res < 50000) {
+      return 10;
+    } else if(res >= 50000) {
+      return 15.00;
+    } else {
+      return 0;
+    }
+  };
+  $('#valider').on('click', function()  {
+    var nbArticle = parseInt($('#nb').val(), 10);
+    var prix = parseInt($('#prix').val(), 10);
+    var err = $('#erreur');
+    if(isNaN(nbArticle)) {
+      err.html('Veuillez saisir un nombre et non pas autre chose');
+      return false;
+    }
+    if(nbArticle < 1) {
+      err.html('Veuillez saisir un nombre d\'article positf');
+      return false;
+    }
+    if(isNaN(prix)) {
+      err.html('Veuillez saisir un nombre et non pas autre chose');
+      return false;
+    }
+    if(prix < 1) {
+      err.html('Veuillez saisir un prix positf');
+      return false;
+    }
+    var taux =parseInt($("#pays option:selected" ).attr('value'), 10);
+    var res = parseInt(nbArticle * prix, 10);
+    var prixTVA = prix * taux /100;
+    res += prixTVA;
+    var rabais = getRabais(res);
+    res = res - (res * rabais / 100);
+    err.html('');
+  $('#resultat').html(res);
+
+  });
+
+
+
+</script>
+</body>
+</html>
